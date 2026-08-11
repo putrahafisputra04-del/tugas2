@@ -1,0 +1,335 @@
+```html
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login Customer | Pisshop</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI',sans-serif;
+}
+
+body{
+background:#f5f5f5;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+}
+
+.container{
+width:900px;
+max-width:95%;
+background:white;
+display:flex;
+border-radius:20px;
+overflow:hidden;
+box-shadow:0 15px 35px rgba(0,0,0,.15);
+}
+
+.left{
+flex:1;
+background:#6F4E37;
+color:white;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+padding:50px;
+}
+
+.left i{
+font-size:90px;
+margin-bottom:20px;
+}
+
+.left h1{
+font-size:42px;
+margin-bottom:10px;
+}
+
+.left p{
+text-align:center;
+line-height:1.8;
+opacity:.9;
+}
+
+.right{
+flex:1;
+padding:50px;
+}
+
+.right h2{
+color:#6F4E37;
+margin-bottom:30px;
+text-align:center;
+}
+
+.input-group{
+margin-bottom:20px;
+}
+
+.input-group label{
+display:block;
+margin-bottom:8px;
+font-weight:bold;
+color:#555;
+}
+
+.input-box{
+position:relative;
+}
+
+.input-box i{
+position:absolute;
+left:15px;
+top:50%;
+transform:translateY(-50%);
+color:#777;
+}
+
+.input-box input{
+width:100%;
+padding:14px 45px;
+border:1px solid #ccc;
+border-radius:10px;
+font-size:15px;
+outline:none;
+transition:.3s;
+}
+
+.input-box input:focus{
+border-color:#6F4E37;
+box-shadow:0 0 8px rgba(111,78,55,.3);
+}
+
+.password-toggle{
+position:absolute;
+right:15px;
+top:50%;
+transform:translateY(-50%);
+cursor:pointer;
+color:#777;
+}
+
+.options{
+display:flex;
+justify-content:space-between;
+margin-bottom:25px;
+font-size:14px;
+}
+
+.options a{
+text-decoration:none;
+color:#6F4E37;
+}
+
+.btn{
+width:100%;
+padding:14px;
+border:none;
+border-radius:10px;
+font-size:16px;
+font-weight:bold;
+cursor:pointer;
+margin-bottom:15px;
+transition:.3s;
+}
+
+.login{
+background:#6F4E37;
+color:white;
+}
+
+.login:hover{
+background:#553a29;
+}
+
+.back{
+background:#ddd;
+}
+
+.back:hover{
+background:#bbb;
+}
+
+.register{
+text-align:center;
+margin-top:10px;
+}
+
+.register a{
+color:#6F4E37;
+font-weight:bold;
+text-decoration:none;
+}
+
+.footer{
+margin-top:25px;
+text-align:center;
+font-size:13px;
+color:#999;
+}
+
+@media(max-width:768px){
+
+.container{
+flex-direction:column;
+}
+
+.left{
+padding:30px;
+}
+
+.right{
+padding:30px;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="left">
+
+<i class="fas fa-bag-shopping"></i>
+
+<h1>Pisshop</h1>
+
+<p>
+Selamat datang kembali.<br>
+Silakan login untuk mulai berbelanja.
+</p>
+
+</div>
+
+<div class="right">
+
+<h2>Login Customer</h2>
+
+<form action="index.html">
+
+<div class="input-group">
+
+<label>Email</label>
+
+<div class="input-box">
+
+<i class="fas fa-envelope"></i>
+
+<input
+type="email"
+placeholder="Masukkan Email"
+required>
+
+</div>
+
+</div>
+
+<div class="input-group">
+
+<label>Password</label>
+
+<div class="input-box">
+
+<i class="fas fa-lock"></i>
+
+<input
+type="password"
+id="password"
+placeholder="Masukkan Password"
+required>
+
+<i class="fas fa-eye password-toggle"
+onclick="togglePassword()"></i>
+
+</div>
+
+</div>
+
+<div class="options">
+
+<label>
+<input type="checkbox">
+ Ingat Saya
+</label>
+
+<a href="#">Lupa Password?</a>
+
+</div>
+
+
+
+<button
+type="submit"
+class="btn login">
+<i class="fas fa-right-to-bracket"></i>
+Login
+</button>
+
+<button
+type="button"
+class="btn login"
+onclick="location.href='login.html'">
+Kembali
+</button>
+
+<div class="register">
+
+Belum punya akun?
+
+<a href="register.html">
+
+Daftar Sekarang
+
+</a>
+
+</div>
+
+<div class="footer">
+
+© 2026 Pisshop
+
+</div>
+
+</form>
+
+</div>
+
+</div>
+
+<script>
+
+function togglePassword(){
+
+const pass=document.getElementById("password");
+
+if(pass.type==="password"){
+
+pass.type="text";
+
+}else{
+
+pass.type="password";
+
+}
+
+}
+
+</script>
+
+</body>
+</html>
+```
