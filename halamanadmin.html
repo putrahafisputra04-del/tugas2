@@ -1,0 +1,1304 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard Admin Pisshop</title>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,Helvetica,sans-serif;
+}
+
+body{
+    background:#eef1f7;
+}
+
+.container{
+    width:98%;
+    margin:20px auto;
+}
+
+/* HEADER */
+.header{
+    background:#7a563b;
+    min-height:64px;
+    border-radius:10px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:12px 20px;
+    color:white;
+    gap:15px;
+}
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-size:18px;
+    font-weight:bold;
+}
+
+.logo i{
+    font-size:25px;
+}
+
+.header-right{
+    display:flex;
+    gap:10px;
+}
+
+.btn{
+    border:none;
+    padding:9px 18px;
+    border-radius:4px;
+    cursor:pointer;
+    font-size:14px;
+}
+
+.logout{
+    background:white;
+    color:#6d472d;
+    font-weight:bold;
+}
+
+.tutup{
+    background:#6b4429;
+    color:white;
+}
+
+/* CARD */
+.cards{
+    margin-top:20px;
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:18px;
+}
+
+.card{
+    background:white;
+    border-radius:10px;
+    padding:18px;
+    box-shadow:0 2px 8px rgba(0,0,0,.08);
+    border-left:4px solid #7a563b;
+    min-height:78px;
+}
+
+.card h4{
+    font-size:13px;
+    color:#777;
+    margin-bottom:8px;
+    text-transform:uppercase;
+}
+
+.card h2{
+    font-size:35px;
+    color:#7a563b;
+}
+
+/* TABLE */
+.table-box{
+    margin-top:25px;
+}
+
+.table-title{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:10px;
+    font-size:24px;
+    font-weight:bold;
+    color:#222;
+    gap:10px;
+}
+
+.table-title span{
+    font-size:28px;
+}
+
+.delete{
+    background:#dc3545;
+    color:white;
+    padding:9px 18px;
+    border:none;
+    border-radius:4px;
+    cursor:pointer;
+    font-size:14px;
+}
+
+.table-wrapper{
+    overflow-x:auto;
+    border-radius:10px;
+}
+
+table{
+    width:100%;
+    min-width:1100px;
+    border-collapse:collapse;
+    background:white;
+    border-radius:10px;
+    overflow:hidden;
+    box-shadow:0 2px 8px rgba(0,0,0,.08);
+}
+
+thead{
+    background:white;
+}
+
+thead th{
+    padding:16px;
+    text-align:left;
+    font-size:15px;
+    color:#444;
+    border-bottom:1px solid #ddd;
+    white-space:nowrap;
+}
+
+tbody td{
+    padding:14px 16px;
+    text-align:center;
+    color:#555;
+    border-bottom:1px solid #eee;
+    vertical-align:middle;
+}
+
+tbody tr:hover{
+    background:#faf8f6;
+}
+
+.empty{
+    padding:25px !important;
+    color:#888 !important;
+}
+
+/* STATUS */
+.status-select{
+    border:1px solid #cfcfcf;
+    background:white;
+    color:#6d472d;
+    padding:7px 9px;
+    border-radius:6px;
+    cursor:pointer;
+    font-size:12px;
+    font-weight:bold;
+    outline:none;
+    min-width:110px;
+}
+
+.status-select:focus{
+    border-color:#7a563b;
+    box-shadow:0 0 0 2px rgba(122,86,59,.12);
+}
+
+.status-badge{
+    display:inline-block;
+    padding:5px 9px;
+    border-radius:5px;
+    font-size:11px;
+    font-weight:bold;
+    margin-bottom:6px;
+}
+
+.status-dikemas{
+    background:#fff3cd;
+    color:#856404;
+}
+
+.status-dikirim{
+    background:#dbeafe;
+    color:#1d4ed8;
+}
+
+.status-diterima{
+    background:#d4edda;
+    color:#155724;
+}
+
+.status-info{
+    font-size:10px;
+    color:#888;
+}
+
+/* NOTIFICATION */
+.toast{
+    position:fixed;
+    right:20px;
+    bottom:20px;
+    background:#7a563b;
+    color:white;
+    padding:12px 18px;
+    border-radius:8px;
+    box-shadow:0 5px 20px rgba(0,0,0,.2);
+    opacity:0;
+    transform:translateY(20px);
+    pointer-events:none;
+    transition:.3s;
+    z-index:9999;
+    font-size:13px;
+}
+
+.toast.show{
+    opacity:1;
+    transform:translateY(0);
+}
+
+@media(max-width:900px){
+    .cards{
+        grid-template-columns:1fr;
+    }
+
+    .header{
+        flex-direction:column;
+        height:auto;
+        padding:15px;
+        gap:15px;
+    }
+
+    .header-right{
+        width:100%;
+        justify-content:center;
+    }
+
+    .table-title{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+}
+
+/* =========================
+   MANAJEMEN PRODUK
+========================= */
+.product-panel{
+    margin-top:25px;
+    background:white;
+    border-radius:10px;
+    padding:20px;
+    box-shadow:0 2px 8px rgba(0,0,0,.08);
+}
+
+.product-panel-title{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    margin-bottom:15px;
+}
+
+.product-panel-title h3{
+    color:#222;
+    font-size:20px;
+}
+
+.product-form{
+    display:grid;
+    grid-template-columns:1.4fr 1fr 1fr 1.7fr 1.7fr auto;
+    gap:10px;
+    align-items:end;
+}
+
+.product-form .field label{
+    display:block;
+    font-size:11px;
+    font-weight:bold;
+    color:#666;
+    margin-bottom:5px;
+}
+
+.product-form input,
+.product-form select{
+    width:100%;
+    padding:10px;
+    border:1px solid #ddd;
+    border-radius:6px;
+    outline:none;
+}
+
+.product-form input:focus,
+.product-form select:focus{
+    border-color:#7a563b;
+}
+
+.btn-add-product{
+    background:#7a563b;
+    color:white;
+    border:none;
+    padding:10px 15px;
+    border-radius:6px;
+    cursor:pointer;
+    font-weight:bold;
+    white-space:nowrap;
+}
+
+.btn-add-product:hover{
+    background:#5f402c;
+}
+
+.product-list{
+    margin-top:20px;
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+    gap:12px;
+}
+
+.admin-product-card{
+    border:1px solid #eee;
+    border-radius:8px;
+    overflow:hidden;
+    background:#fff;
+}
+
+.admin-product-card img{
+    width:100%;
+    height:130px;
+    object-fit:cover;
+    background:#eee;
+}
+
+.admin-product-info{
+    padding:10px;
+}
+
+.admin-product-title{
+    font-weight:bold;
+    font-size:13px;
+    margin-bottom:5px;
+}
+
+.admin-product-meta{
+    color:#777;
+    font-size:11px;
+    margin-bottom:4px;
+}
+
+.admin-product-price{
+    color:#7a563b;
+    font-weight:bold;
+    margin-bottom:8px;
+}
+
+.btn-delete-product{
+    width:100%;
+    background:#dc3545;
+    color:white;
+    border:none;
+    padding:7px;
+    border-radius:5px;
+    cursor:pointer;
+    font-size:11px;
+}
+
+.empty-products{
+    color:#888;
+    text-align:center;
+    padding:15px;
+    grid-column:1/-1;
+}
+
+@media(max-width:1200px){
+    .product-form{
+        grid-template-columns:repeat(2,1fr);
+    }
+}
+
+@media(max-width:600px){
+    .product-form{
+        grid-template-columns:1fr;
+    }
+}
+
+
+.upload-hint{
+    display:block;
+    margin-top:5px;
+    color:#888;
+    font-size:10px;
+}
+
+.file-preview{
+    margin-top:10px;
+    display:none;
+    width:100%;
+    max-height:150px;
+    object-fit:contain;
+    border:1px solid #eee;
+    border-radius:6px;
+    background:#fafafa;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="header">
+
+        <div class="logo">
+            <i class="fa-solid fa-user-shield"></i>
+            <h1>Dashboard Admin Pisshop</h1>
+        </div>
+
+        <div class="header-right">
+            <button class="btn logout"
+                onclick="location.href='login.html'">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                Logout
+            </button>
+
+            <button class="btn tutup" onclick="window.close()">
+                Tutup
+            </button>
+        </div>
+
+    </div>
+
+    <div class="cards">
+
+        <div class="card">
+            <h4>TOTAL PESANAN</h4>
+            <h2 id="admTotalOrders">0</h2>
+        </div>
+
+        <div class="card">
+            <h4>ITEM TERJUAL</h4>
+            <h2 id="admTotalItems">0</h2>
+        </div>
+
+        <div class="card">
+            <h4>TOTAL OMSET</h4>
+            <h2 id="admTotalRevenue" style="font-size:20px;">
+                Rp 0
+            </h2>
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         MANAJEMEN PRODUK
+    ========================= -->
+    <div class="product-panel">
+
+        <div class="product-panel-title">
+            <h3>
+                <i class="fa-solid fa-box-open"></i>
+                Tambah Produk
+            </h3>
+        </div>
+
+        <form class="product-form" onsubmit="addProduct(event)">
+
+            <div class="field">
+                <label>Nama Produk</label>
+                <input id="productName" type="text"
+                       placeholder="Contoh: Kaos Premium"
+                       required>
+            </div>
+
+            <div class="field">
+                <label>Kategori</label>
+                <select id="productCategory" required>
+                    <option value="Baju">Baju</option>
+                    <option value="Sepatu">Sepatu</option>
+                    <option value="Aksesoris">Aksesoris</option>
+                    <option value="Tas">Tas</option>
+                    <option value="Olahraga">Olahraga</option>
+                    <option value="Elektronik">Elektronik</option>
+                </select>
+            </div>
+
+            <div class="field">
+                <label>Harga</label>
+                <input id="productPrice" type="number"
+                       min="0"
+                       placeholder="125000"
+                       required>
+            </div>
+
+            <div class="field">
+                <label>Foto Produk</label>
+                <input id="productImage" type="file"
+                       accept="image/*"
+                       required>
+                <small class="upload-hint">Pilih gambar dari komputer/HP</small>
+            </div>
+
+            <div class="field">
+                <label>Video Produk</label>
+                <input id="productVideo" type="file"
+                       accept="video/*">
+                <small class="upload-hint">Opsional • MP4 disarankan</small>
+            </div>
+
+            <button class="btn-add-product" type="submit">
+                <i class="fa-solid fa-plus"></i>
+                Tambah Produk
+            </button>
+
+        </form>
+
+        <img id="imagePreview" class="file-preview" alt="Preview foto produk">
+        <video id="videoPreview" class="file-preview" controls></video>
+
+        <div id="adminProductList" class="product-list"></div>
+
+    </div>
+
+    <div class="table-box">
+
+        <div class="table-title">
+
+            <div>
+                <span>
+                    <i class="fa-solid fa-list"></i>
+                </span>
+                Data Checkout Masuk
+            </div>
+
+            <button class="delete" onclick="clearAllOrders()">
+                <i class="fa-solid fa-trash"></i>
+                Hapus Semua Data
+            </button>
+
+        </div>
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nama Pembeli</th>
+                        <th>Telepon</th>
+                        <th>Alamat</th>
+                        <th>Produk</th>
+                        <th>Qty</th>
+                        <th>Total</th>
+                        <th>Waktu</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+
+                <tbody id="ordersTableBody">
+
+                    <tr>
+                        <td colspan="9" class="empty">
+                            Belum ada pesanan masuk.
+                        </td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div id="toast" class="toast">
+    Status pesanan berhasil diubah.
+</div>
+
+<script>
+
+
+/* =========================
+   MANAJEMEN PRODUK
+========================= */
+
+function getAdminProducts(){
+    try{
+        const products = JSON.parse(
+            localStorage.getItem("pisshop_products")
+        ) || [];
+
+        return Array.isArray(products) ? products : [];
+    }catch(error){
+        return [];
+    }
+}
+
+function saveAdminProducts(products){
+    localStorage.setItem(
+        "pisshop_products",
+        JSON.stringify(products)
+    );
+}
+
+function readFileAsDataURL(file){
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = () => reject(new Error("File tidak dapat dibaca."));
+
+        reader.readAsDataURL(file);
+    });
+}
+
+function formatFileSize(bytes){
+    if(bytes < 1024) return bytes + " B";
+    if(bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + " KB";
+    return (bytes / (1024 * 1024)).toFixed(1) + " MB";
+}
+
+async function addProduct(event){
+
+    event.preventDefault();
+
+    const title =
+        document.getElementById("productName").value.trim();
+
+    const category =
+        document.getElementById("productCategory").value;
+
+    const price =
+        Number(document.getElementById("productPrice").value);
+
+    const imageFile =
+        document.getElementById("productImage").files[0];
+
+    const videoFile =
+        document.getElementById("productVideo").files[0];
+
+
+    if(!title || !category || !price || !imageFile){
+
+        alert("Nama, kategori, harga, dan foto produk wajib diisi.");
+        return;
+    }
+
+
+    // Batas ukuran supaya localStorage tidak cepat penuh.
+    // Foto maksimal 2 MB, video maksimal 6 MB.
+    if(imageFile.size > 2 * 1024 * 1024){
+
+        alert(
+            "Foto terlalu besar (" +
+            formatFileSize(imageFile.size) +
+            "). Maksimal 2 MB."
+        );
+
+        return;
+    }
+
+
+    if(videoFile && videoFile.size > 6 * 1024 * 1024){
+
+        alert(
+            "Video terlalu besar (" +
+            formatFileSize(videoFile.size) +
+            "). Maksimal 6 MB."
+        );
+
+        return;
+    }
+
+
+    const button =
+        document.querySelector(".btn-add-product");
+
+    const oldButtonText = button.innerHTML;
+
+    button.disabled = true;
+    button.innerHTML =
+        '<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan...';
+
+
+    try{
+
+        const imageData =
+            await readFileAsDataURL(imageFile);
+
+        let videoData = "";
+
+        if(videoFile){
+            videoData =
+                await readFileAsDataURL(videoFile);
+        }
+
+
+        const products = getAdminProducts();
+
+        const newProduct = {
+
+            id: Date.now(),
+
+            title: title,
+
+            category: category,
+
+            price: price,
+
+            // File gambar disimpan sebagai Data URL.
+            img: imageData,
+
+            // File video disimpan sebagai Data URL.
+            // Customer dapat langsung memutarnya.
+            video: videoData
+
+        };
+
+
+        products.unshift(newProduct);
+
+
+        try{
+
+            saveAdminProducts(products);
+
+        }catch(storageError){
+
+            // Kemungkinan browser kehabisan localStorage.
+            alert(
+                "Produk gagal disimpan karena penyimpanan browser penuh. " +
+                "Coba gunakan foto/video yang lebih kecil."
+            );
+
+            return;
+        }
+
+
+        document.getElementById("productName").value = "";
+        document.getElementById("productPrice").value = "";
+        document.getElementById("productImage").value = "";
+        document.getElementById("productVideo").value = "";
+
+        document.getElementById("imagePreview").style.display = "none";
+        document.getElementById("imagePreview").src = "";
+
+        const videoPreview =
+            document.getElementById("videoPreview");
+
+        videoPreview.pause();
+        videoPreview.removeAttribute("src");
+        videoPreview.load();
+        videoPreview.style.display = "none";
+
+
+        renderAdminProducts();
+
+        showToast(
+            "Produk \"" + title + "\" berhasil ditambahkan."
+        );
+
+    }catch(error){
+
+        console.error(error);
+
+        alert(
+            "Gagal membaca file. Pastikan foto/video bisa dibuka oleh browser."
+        );
+
+    }finally{
+
+        button.disabled = false;
+        button.innerHTML = oldButtonText;
+
+    }
+}
+
+function setupFilePreview(){
+
+    const imageInput =
+        document.getElementById("productImage");
+
+    const videoInput =
+        document.getElementById("productVideo");
+
+
+    imageInput.addEventListener("change", async function(){
+
+        const file = this.files[0];
+
+        const preview =
+            document.getElementById("imagePreview");
+
+
+        if(!file){
+
+            preview.style.display = "none";
+            preview.src = "";
+            return;
+        }
+
+
+        if(file.size > 2 * 1024 * 1024){
+
+            alert("Foto maksimal 2 MB.");
+            this.value = "";
+            preview.style.display = "none";
+            return;
+        }
+
+
+        preview.src =
+            await readFileAsDataURL(file);
+
+        preview.style.display = "block";
+
+    });
+
+
+    videoInput.addEventListener("change", async function(){
+
+        const file = this.files[0];
+
+        const preview =
+            document.getElementById("videoPreview");
+
+
+        if(!file){
+
+            preview.pause();
+            preview.removeAttribute("src");
+            preview.load();
+            preview.style.display = "none";
+            return;
+        }
+
+
+        if(file.size > 6 * 1024 * 1024){
+
+            alert("Video maksimal 6 MB.");
+            this.value = "";
+            preview.pause();
+            preview.removeAttribute("src");
+            preview.load();
+            preview.style.display = "none";
+            return;
+        }
+
+
+        preview.src =
+            await readFileAsDataURL(file);
+
+        preview.style.display = "block";
+
+    });
+}
+
+
+function renderAdminProducts(){
+
+    const container =
+        document.getElementById("adminProductList");
+
+    const products = getAdminProducts();
+
+
+    if(products.length === 0){
+
+        container.innerHTML = `
+            <div class="empty-products">
+                Belum ada produk tambahan dari admin.
+            </div>
+        `;
+
+        return;
+    }
+
+
+    container.innerHTML = products.map(product => `
+
+        <div class="admin-product-card">
+
+            <img
+                src="${escapeHTML(product.img)}"
+                alt="${escapeHTML(product.title)}"
+                onerror="this.src='https://via.placeholder.com/500x300?text=Gambar+Produk'"
+            >
+
+            <div class="admin-product-info">
+
+                <div class="admin-product-title">
+                    ${escapeHTML(product.title)}
+                </div>
+
+                <div class="admin-product-meta">
+                    ${escapeHTML(product.category)}
+                </div>
+
+                <div class="admin-product-price">
+                    Rp ${Number(product.price).toLocaleString("id-ID")}
+                </div>
+
+                <div class="admin-product-meta">
+                    <i class="fa-solid fa-image"></i> Foto tersimpan
+                    ${product.video ? ' • <i class="fa-solid fa-video"></i> Video tersimpan' : ' • Tanpa video'}
+                </div>
+
+                <button
+                    class="btn-delete-product"
+                    onclick="deleteProduct(${Number(product.id)})">
+                    <i class="fa-solid fa-trash"></i>
+                    Hapus Produk
+                </button>
+
+            </div>
+
+        </div>
+
+    `).join("");
+}
+
+
+function deleteProduct(productId){
+
+    const products = getAdminProducts();
+
+    const product =
+        products.find(item => Number(item.id) === Number(productId));
+
+
+    if(!product) return;
+
+
+    if(!confirm(
+        'Hapus produk "' + product.title + '"?'
+    )){
+        return;
+    }
+
+
+    const filtered =
+        products.filter(
+            item => Number(item.id) !== Number(productId)
+        );
+
+
+    saveAdminProducts(filtered);
+
+    renderAdminProducts();
+
+    showToast(
+        "Produk berhasil dihapus."
+    );
+}
+
+
+
+function getOrders(){
+    let orders = JSON.parse(
+        localStorage.getItem("shopee_orders")
+    ) || [];
+
+    /* Pesanan lama yang belum memiliki status
+       otomatis dianggap Dikemas */
+    let changed = false;
+
+    orders = orders.map(order => {
+
+        if(!order.status){
+            order.status = "Dikemas";
+            changed = true;
+        }
+
+        return order;
+    });
+
+    if(changed){
+        localStorage.setItem(
+            "shopee_orders",
+            JSON.stringify(orders)
+        );
+    }
+
+    return orders;
+}
+
+
+function renderAdminDashboard(){
+
+    const orders = getOrders();
+
+    let totalRevenue = 0;
+    let totalItems = 0;
+
+    orders.forEach(order => {
+
+        totalRevenue += Number(order.total) || 0;
+        totalItems += Number(order.itemsCount) || 0;
+
+    });
+
+
+    document.getElementById("admTotalOrders").innerText =
+        orders.length;
+
+    document.getElementById("admTotalItems").innerText =
+        totalItems;
+
+    document.getElementById("admTotalRevenue").innerText =
+        "Rp " + totalRevenue.toLocaleString("id-ID");
+
+
+    const tbody =
+        document.getElementById("ordersTableBody");
+
+
+    if(orders.length === 0){
+
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="9" class="empty">
+                    Belum ada pesanan masuk.
+                </td>
+            </tr>
+        `;
+
+        return;
+    }
+
+
+    tbody.innerHTML = orders.map(order => {
+
+        const status = order.status || "Dikemas";
+
+        const statusClass =
+            "status-" + status.toLowerCase();
+
+        return `
+
+        <tr>
+
+            <td>
+                <b>${escapeHTML(order.id)}</b>
+            </td>
+
+            <td>
+                ${escapeHTML(order.buyer)}
+            </td>
+
+            <td>
+                ${escapeHTML(order.phone)}
+            </td>
+
+            <td style="max-width:180px;">
+                ${escapeHTML(order.address)}
+            </td>
+
+            <td>
+                ${escapeHTML(order.productTitle)}
+            </td>
+
+            <td>
+                ${Number(order.itemsCount) || 0}
+            </td>
+
+            <td>
+                <b>
+                    Rp ${(Number(order.total) || 0)
+                        .toLocaleString("id-ID")}
+                </b>
+            </td>
+
+            <td>
+                ${escapeHTML(order.time)}
+            </td>
+
+            <td>
+
+                <span class="status-badge ${statusClass}">
+                    ${status}
+                </span>
+
+                <br>
+
+                <select
+                    class="status-select"
+                    onchange="changeOrderStatus('${escapeJS(order.id)}', this.value)"
+                >
+
+                    <option value="Dikemas"
+                        ${status === "Dikemas" ? "selected" : ""}>
+                        📦 Dikemas
+                    </option>
+
+                    <option value="Dikirim"
+                        ${status === "Dikirim" ? "selected" : ""}>
+                        🚚 Dikirim
+                    </option>
+
+                    <option value="Diterima"
+                        ${status === "Diterima" ? "selected" : ""}>
+                        ✅ Diterima
+                    </option>
+
+                </select>
+
+                <div class="status-info">
+                    Ubah status
+                </div>
+
+            </td>
+
+        </tr>
+
+        `;
+
+    }).join("");
+
+}
+
+
+/* =========================
+   UBAH STATUS PESANAN
+========================= */
+
+function changeOrderStatus(orderId, newStatus){
+
+    const orders = getOrders();
+
+    const order = orders.find(
+        item => String(item.id) === String(orderId)
+    );
+
+    if(!order){
+        alert("Pesanan tidak ditemukan.");
+        renderAdminDashboard();
+        return;
+    }
+
+
+    const oldStatus = order.status || "Dikemas";
+
+    order.status = newStatus;
+
+
+    localStorage.setItem(
+        "shopee_orders",
+        JSON.stringify(orders)
+    );
+
+
+    renderAdminDashboard();
+
+
+    showToast(
+        "Pesanan " + order.id +
+        " berhasil diubah dari " +
+        oldStatus + " menjadi " +
+        newStatus
+    );
+
+}
+
+
+/* =========================
+   HAPUS SEMUA PESANAN
+========================= */
+
+function clearAllOrders(){
+
+    const orders = getOrders();
+
+    if(orders.length === 0){
+        alert("Belum ada data pesanan.");
+        return;
+    }
+
+
+    if(confirm(
+        "Yakin ingin menghapus semua data checkout?"
+    )){
+
+        localStorage.removeItem("shopee_orders");
+
+        renderAdminDashboard();
+
+        showToast("Semua data pesanan berhasil dihapus.");
+    }
+
+}
+
+
+/* =========================
+   TOAST
+========================= */
+
+let toastTimer;
+
+function showToast(message){
+
+    const toast =
+        document.getElementById("toast");
+
+    toast.innerText = message;
+
+    toast.classList.add("show");
+
+    clearTimeout(toastTimer);
+
+    toastTimer = setTimeout(() => {
+
+        toast.classList.remove("show");
+
+    }, 3000);
+
+}
+
+
+/* =========================
+   KEAMANAN TEKS TABEL
+========================= */
+
+function escapeHTML(value){
+
+    return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+
+function escapeJS(value){
+
+    return String(value ?? "")
+        .replace(/\\/g, "\\\\")
+        .replace(/'/g, "\\'");
+}
+
+
+/* =========================
+   UPDATE OTOMATIS
+========================= */
+
+window.addEventListener("storage", function(event){
+
+    if(event.key === "shopee_orders"){
+        renderAdminDashboard();
+    }
+
+    if(event.key === "pisshop_products"){
+        renderAdminProducts();
+    }
+
+});
+
+
+window.onload = function(){
+
+    renderAdminDashboard();
+    renderAdminProducts();
+    setupFilePreview();
+
+};
+
+</script>
+
+</body>
+</html>
