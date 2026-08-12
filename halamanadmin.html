@@ -1217,4 +1217,775 @@ function setupFilePreview(){
             }
 
 
-           
+            preview.src =
+                await readFileAsDataURL(
+                    file
+                );
+
+            preview.style.display =
+                "block";
+
+        }
+    );
+
+}
+
+
+/* RENDER PRODUK */
+
+function renderAdminProducts(){
+
+    const container =
+        document.getElementById(
+            "adminProductList"
+        );
+
+    const products =
+        getAdminProducts();
+
+
+    if(products.length === 0){
+
+        container.innerHTML = `
+            <div class="empty-products">
+                Belum ada produk tambahan dari admin.
+            </div>
+        `;
+
+        return;
+
+    }
+
+
+    container.innerHTML =
+        products.map(product => `
+
+        <div class="admin-product-card">
+
+            <img
+                src="${escapeHTML(product.img)}"
+                alt="${escapeHTML(product.title)}">
+
+            <div class="admin-product-info">
+
+                <div class="admin-product-title">
+                    ${escapeHTML(product.title)}
+                </div>
+
+                <div class="admin-product-meta">
+                    ${escapeHTML(product.category)}
+                </div>
+
+                <div class="admin-product-price">
+                    Rp ${Number(product.price)
+                        .toLocaleString("id-ID")}
+                </div>
+
+                <div class="admin-product-meta">
+
+                    <i class="fa-solid fa-image"></i>
+                    Foto tersimpan
+
+                    ${
+                        product.video
+                        ? " • 🎥 Video tersimpan"
+                        : " • Tanpa video"
+                    }
+
+                </div>
+
+                <button
+                    class="btn-delete-product"
+                    onclick="deleteProduct(${Number(product.id)})">
+
+                    <i class="fa-solid fa-trash"></i>
+                    Hapus Produk
+
+                </button>
+
+            </div>
+
+        </div>
+
+    `).join("");
+
+}
+
+
+/* HAPUS PRODUK */
+
+function deleteProduct(productId){
+
+    const products =
+        getAdminProducts();
+
+
+    const product =
+        products.find(
+            item =>
+            Number(item.id) ===
+            Number(productId)
+        );
+
+
+    if(!product)
+        return;
+
+
+    if(
+        !confirm(
+            'Hapus produk "' +
+            product.title +
+            '"?'
+        )
+    ){
+
+        return;
+
+    }
+
+
+    const filtered =
+        products.filter(
+            item =>
+            Number(item.id) !==
+            Number(productId)
+        );
+
+
+    saveAdminProducts(
+        filtered
+    );
+
+
+    renderAdminProducts();
+
+    showToast(
+        "Produk berhasil dihapus."
+    );
+
+}
+
+
+/* =========================
+   DATA PESANAN
+========================= */
+
+function getOrders(){
+
+    let orders =
+        JSON.parse(
+            localStorage.getItem(
+                "shopee_orders"
+            )
+        ) || [];
+
+
+    let changed = false;
+
+
+    orders =
+        orders.map(order => {
+
+            if(!order.status){
+
+                order.status =
+                    "Dikemas";
+
+                changed = true;
+
+            }
+
+            return order;
+
+        });
+
+
+    if(changed){
+
+        localStorage.setItem(
+            "shopee_orders",
+            JSON.stringify(orders)
+        );
+
+    }
+
+
+    return orders;
+
+}
+
+
+/* =========================
+   ICON PEMBAYARAN
+========================= */
+
+function getPaymentHTML(payment){
+
+    const value =
+        String(
+            payment ||
+            "Belum dipilih"
+        );
+
+
+    const lower =
+        value.toLowerCase();
+
+
+    if(
+        lower.includes("cod")
+    ){
+
+        return `
+            <span class="payment-badge payment-cod">
+                💵 ${escapeHTML(value)}
+            </span>
+        `;
+
+    }
+
+
+    if(
+        lower.includes("bank") ||
+        lower.includes("transfer")
+    ){
+
+        return `
+            <span class="payment-badge payment-bank">
+                🏦 ${escapeHTML(value)}
+            </span>
+        `;
+
+    }
+
+
+    if(
+        lower.includes("dana") ||
+        lower.includes("gopay") ||
+        lower.includes("ovo")
+    ){
+
+        return `
+            <span class="payment-badge payment-ewallet">
+                📱 ${escapeHTML(value)}
+            </span>
+        `;
+
+    }
+
+
+    if(
+        lower.includes("qris")
+    ){
+
+        return `
+            <span class="payment-badge payment-qris">
+                📲 ${escapeHTML(value)}
+            </span>
+        `;
+
+    }
+
+
+    return `
+        <span class="payment-badge payment-default">
+            ${escapeHTML(value)}
+        </span>
+    `;
+
+}
+
+
+/* =========================
+   DASHBOARD
+========================= */
+
+function renderAdminDashboard(){
+
+    const orders =
+        getOrders();
+
+
+    let totalRevenue = 0;
+
+    let totalItems = 0;
+
+
+    orders.forEach(order => {
+
+        totalRevenue +=
+            Number(order.total) || 0;
+
+        totalItems +=
+            Number(order.itemsCount) || 0;
+
+    });
+
+
+    document.getElementById(
+        "admTotalOrders"
+    ).innerText =
+        orders.length;
+
+
+    document.getElementById(
+        "admTotalItems"
+    ).innerText =
+        totalItems;
+
+
+    document.getElementById(
+        "admTotalRevenue"
+    ).innerText =
+        "Rp " +
+        totalRevenue.toLocaleString(
+            "id-ID"
+        );
+
+
+    const tbody =
+        document.getElementById(
+            "ordersTableBody"
+        );
+
+
+    if(orders.length === 0){
+
+        tbody.innerHTML = `
+
+            <tr>
+
+                <td
+                    colspan="10"
+                    class="empty">
+
+                    Belum ada pesanan masuk.
+
+                </td>
+
+            </tr>
+
+        `;
+
+        return;
+
+    }
+
+
+    tbody.innerHTML =
+        orders.map(order => {
+
+        const status =
+            order.status ||
+            "Dikemas";
+
+
+        const statusClass =
+            "status-" +
+            status.toLowerCase();
+
+
+        /*
+         * Membaca metode pembayaran.
+         *
+         * Customer harus menyimpan:
+         * paymentMethod
+         *
+         * pada object order.
+         */
+
+        const payment =
+            order.paymentMethod ||
+            order.payment ||
+            "Belum dipilih";
+
+
+        return `
+
+        <tr>
+
+            <td>
+                <b>
+                    ${escapeHTML(order.id)}
+                </b>
+            </td>
+
+
+            <td>
+                ${escapeHTML(order.buyer)}
+            </td>
+
+
+            <td>
+                ${escapeHTML(order.phone)}
+            </td>
+
+
+            <td style="max-width:180px;">
+
+                ${escapeHTML(
+                    order.address
+                )}
+
+            </td>
+
+
+            <td>
+                ${escapeHTML(
+                    order.productTitle
+                )}
+            </td>
+
+
+            <td>
+                ${Number(
+                    order.itemsCount
+                ) || 0}
+            </td>
+
+
+            <td>
+
+                <b style="color:#7a563b;">
+
+                    Rp ${
+                        (
+                            Number(order.total) ||
+                            0
+                        ).toLocaleString(
+                            "id-ID"
+                        )
+                    }
+
+                </b>
+
+            </td>
+
+
+            <!-- PEMBAYARAN -->
+
+            <td>
+
+                ${getPaymentHTML(
+                    payment
+                )}
+
+            </td>
+
+
+            <td>
+
+                ${escapeHTML(
+                    order.time
+                )}
+
+            </td>
+
+
+            <td>
+
+                <span
+                    class="status-badge
+                    ${statusClass}">
+
+                    ${escapeHTML(status)}
+
+                </span>
+
+                <br>
+
+
+                <select
+                    class="status-select"
+                    onchange="changeOrderStatus(
+                        '${escapeJS(order.id)}',
+                        this.value
+                    )">
+
+                    <option
+                        value="Dikemas"
+                        ${
+                            status === "Dikemas"
+                            ? "selected"
+                            : ""
+                        }>
+
+                        📦 Dikemas
+
+                    </option>
+
+
+                    <option
+                        value="Dikirim"
+                        ${
+                            status === "Dikirim"
+                            ? "selected"
+                            : ""
+                        }>
+
+                        🚚 Dikirim
+
+                    </option>
+
+
+                    <option
+                        value="Diterima"
+                        ${
+                            status === "Diterima"
+                            ? "selected"
+                            : ""
+                        }>
+
+                        ✅ Diterima
+
+                    </option>
+
+                </select>
+
+
+                <div class="status-info">
+
+                    Ubah status
+
+                </div>
+
+            </td>
+
+        </tr>
+
+        `;
+
+    }).join("");
+
+}
+
+
+/* =========================
+   UBAH STATUS
+========================= */
+
+function changeOrderStatus(
+    orderId,
+    newStatus
+){
+
+    const orders =
+        getOrders();
+
+
+    const order =
+        orders.find(
+            item =>
+            String(item.id) ===
+            String(orderId)
+        );
+
+
+    if(!order){
+
+        alert(
+            "Pesanan tidak ditemukan."
+        );
+
+        renderAdminDashboard();
+
+        return;
+
+    }
+
+
+    const oldStatus =
+        order.status ||
+        "Dikemas";
+
+
+    order.status =
+        newStatus;
+
+
+    localStorage.setItem(
+        "shopee_orders",
+        JSON.stringify(orders)
+    );
+
+
+    renderAdminDashboard();
+
+
+    showToast(
+        "Pesanan " +
+        order.id +
+        " berhasil diubah dari " +
+        oldStatus +
+        " menjadi " +
+        newStatus
+    );
+
+}
+
+
+/* =========================
+   HAPUS SEMUA PESANAN
+========================= */
+
+function clearAllOrders(){
+
+    const orders =
+        getOrders();
+
+
+    if(orders.length === 0){
+
+        alert(
+            "Belum ada data pesanan."
+        );
+
+        return;
+
+    }
+
+
+    if(
+        confirm(
+            "Yakin ingin menghapus semua data checkout?"
+        )
+    ){
+
+        localStorage.removeItem(
+            "shopee_orders"
+        );
+
+
+        renderAdminDashboard();
+
+
+        showToast(
+            "Semua data pesanan berhasil dihapus."
+        );
+
+    }
+
+}
+
+
+/* =========================
+   TOAST
+========================= */
+
+let toastTimer;
+
+
+function showToast(message){
+
+    const toast =
+        document.getElementById(
+            "toast"
+        );
+
+
+    toast.innerText =
+        message;
+
+
+    toast.classList.add(
+        "show"
+    );
+
+
+    clearTimeout(
+        toastTimer
+    );
+
+
+    toastTimer =
+        setTimeout(() => {
+
+            toast.classList.remove(
+                "show"
+            );
+
+        },3000);
+
+}
+
+
+/* =========================
+   KEAMANAN TEKS
+========================= */
+
+function escapeHTML(value){
+
+    return String(
+        value ?? ""
+    )
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
+}
+
+
+function escapeJS(value){
+
+    return String(
+        value ?? ""
+    )
+    .replace(/\\/g,"\\\\")
+    .replace(/'/g,"\\'");
+
+}
+
+
+/* =========================
+   UPDATE OTOMATIS
+========================= */
+
+window.addEventListener(
+    "storage",
+    function(event){
+
+        if(
+            event.key ===
+            "shopee_orders"
+        ){
+
+            renderAdminDashboard();
+
+        }
+
+
+        if(
+            event.key ===
+            "pisshop_products"
+        ){
+
+            renderAdminProducts();
+
+        }
+
+    }
+);
+
+
+/* =========================
+   START
+========================= */
+
+window.onload =
+function(){
+
+    renderAdminDashboard();
+
+    renderAdminProducts();
+
+    setupFilePreview();
+
+};
+
+</script>
+
+</body>
+    </html>
