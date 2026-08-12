@@ -1,335 +1,1256 @@
-```html
 <!DOCTYPE html>
 <html lang="id">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Login Customer | Pisshop</title>
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
 <style>
 
 *{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:'Segoe UI',sans-serif;
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
 }
 
 body{
-background:#f5f5f5;
-display:flex;
-justify-content:center;
-align-items:center;
-height:100vh;
+    background:#f5f5f5;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
 }
 
+/* =========================
+   LOGIN CONTAINER
+========================= */
+
 .container{
-width:900px;
-max-width:95%;
-background:white;
-display:flex;
-border-radius:20px;
-overflow:hidden;
-box-shadow:0 15px 35px rgba(0,0,0,.15);
+    width:900px;
+    max-width:95%;
+    background:white;
+    display:flex;
+    border-radius:20px;
+    overflow:hidden;
+    box-shadow:0 15px 35px rgba(0,0,0,.15);
 }
 
 .left{
-flex:1;
-background:#6F4E37;
-color:white;
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
-padding:50px;
+    flex:1;
+    background:#6F4E37;
+    color:white;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    padding:50px;
 }
 
 .left i{
-font-size:90px;
-margin-bottom:20px;
+    font-size:90px;
+    margin-bottom:20px;
 }
 
 .left h1{
-font-size:42px;
-margin-bottom:10px;
+    font-size:42px;
+    margin-bottom:10px;
 }
 
 .left p{
-text-align:center;
-line-height:1.8;
-opacity:.9;
+    text-align:center;
+    line-height:1.8;
+    opacity:.9;
 }
 
 .right{
-flex:1;
-padding:50px;
+    flex:1;
+    padding:50px;
 }
 
 .right h2{
-color:#6F4E37;
-margin-bottom:30px;
-text-align:center;
+    color:#6F4E37;
+    margin-bottom:30px;
+    text-align:center;
 }
 
+/* INPUT */
+
 .input-group{
-margin-bottom:20px;
+    margin-bottom:20px;
 }
 
 .input-group label{
-display:block;
-margin-bottom:8px;
-font-weight:bold;
-color:#555;
+    display:block;
+    margin-bottom:8px;
+    font-weight:bold;
+    color:#555;
 }
 
 .input-box{
-position:relative;
+    position:relative;
 }
 
-.input-box i{
-position:absolute;
-left:15px;
-top:50%;
-transform:translateY(-50%);
-color:#777;
+.input-box > i:first-child{
+    position:absolute;
+    left:15px;
+    top:50%;
+    transform:translateY(-50%);
+    color:#777;
 }
 
 .input-box input{
-width:100%;
-padding:14px 45px;
-border:1px solid #ccc;
-border-radius:10px;
-font-size:15px;
-outline:none;
-transition:.3s;
+    width:100%;
+    padding:14px 45px;
+    border:1px solid #ccc;
+    border-radius:10px;
+    font-size:15px;
+    outline:none;
 }
 
 .input-box input:focus{
-border-color:#6F4E37;
-box-shadow:0 0 8px rgba(111,78,55,.3);
+    border-color:#6F4E37;
+    box-shadow:0 0 8px rgba(111,78,55,.3);
 }
 
 .password-toggle{
-position:absolute;
-right:15px;
-top:50%;
-transform:translateY(-50%);
-cursor:pointer;
-color:#777;
+    position:absolute;
+    right:15px;
+    top:50%;
+    transform:translateY(-50%);
+    cursor:pointer;
+    color:#777;
 }
+
+/* OPTIONS */
 
 .options{
-display:flex;
-justify-content:space-between;
-margin-bottom:25px;
-font-size:14px;
+    display:flex;
+    align-items:center;
+    margin-bottom:25px;
+    font-size:14px;
 }
 
-.options a{
-text-decoration:none;
-color:#6F4E37;
-}
+/* BUTTON */
 
 .btn{
-width:100%;
-padding:14px;
-border:none;
-border-radius:10px;
-font-size:16px;
-font-weight:bold;
-cursor:pointer;
-margin-bottom:15px;
-transition:.3s;
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:10px;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+    margin-bottom:15px;
+    transition:.3s;
 }
 
 .login{
-background:#6F4E37;
-color:white;
+    background:#6F4E37;
+    color:white;
 }
 
 .login:hover{
-background:#553a29;
+    background:#553a29;
 }
 
 .back{
-background:#ddd;
+    background:#ddd;
+    color:#333;
 }
 
 .back:hover{
-background:#bbb;
+    background:#bbb;
 }
 
+/* REGISTER */
+
 .register{
-text-align:center;
-margin-top:10px;
+    text-align:center;
+    margin-top:10px;
 }
 
 .register a{
-color:#6F4E37;
-font-weight:bold;
-text-decoration:none;
+    color:#6F4E37;
+    font-weight:bold;
+    text-decoration:none;
 }
 
 .footer{
-margin-top:25px;
-text-align:center;
-font-size:13px;
-color:#999;
+    margin-top:25px;
+    text-align:center;
+    font-size:13px;
+    color:#999;
 }
+
+/* MESSAGE */
+
+.message{
+    display:none;
+    padding:12px;
+    border-radius:8px;
+    margin-bottom:20px;
+    text-align:center;
+    font-size:14px;
+}
+
+.message.error{
+    background:#ffe5e5;
+    color:#c62828;
+}
+
+.message.success{
+    background:#e5f7e9;
+    color:#218838;
+}
+
+
+/* =========================
+   MODAL DAFTAR
+========================= */
+
+.modal-overlay{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.55);
+    z-index:9999;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+}
+
+.modal-overlay.show{
+    display:flex;
+}
+
+.register-modal{
+    width:100%;
+    max-width:520px;
+    background:white;
+    border-radius:6px;
+    box-shadow:0 10px 35px rgba(0,0,0,.3);
+    overflow:hidden;
+    animation:modalShow .25s ease;
+}
+
+@keyframes modalShow{
+
+    from{
+        opacity:0;
+        transform:translateY(-20px) scale(.97);
+    }
+
+    to{
+        opacity:1;
+        transform:translateY(0) scale(1);
+    }
+
+}
+
+.modal-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:20px 24px;
+    border-bottom:1px solid #eee;
+}
+
+.modal-header h3{
+    color:#6F4E37;
+    font-size:21px;
+}
+
+.modal-close{
+    border:none;
+    background:none;
+    font-size:25px;
+    color:#888;
+    cursor:pointer;
+}
+
+.modal-close:hover{
+    color:#333;
+}
+
+.modal-body{
+    padding:20px 24px 25px;
+}
+
+.modal-group{
+    margin-bottom:16px;
+}
+
+.modal-group label{
+    display:block;
+    margin-bottom:7px;
+    color:#555;
+    font-weight:600;
+    font-size:14px;
+}
+
+.modal-input{
+    width:100%;
+    padding:12px;
+    border:1px solid #ccc;
+    border-radius:3px;
+    font-size:15px;
+    outline:none;
+}
+
+.modal-input:focus{
+    border-color:#6F4E37;
+}
+
+.modal-password{
+    position:relative;
+}
+
+.modal-password .modal-input{
+    padding-right:45px;
+}
+
+.modal-eye{
+    position:absolute;
+    right:13px;
+    top:50%;
+    transform:translateY(-50%);
+    cursor:pointer;
+    color:#888;
+}
+
+.register-submit{
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:3px;
+    background:#6F4E37;
+    color:white;
+    font-size:15px;
+    font-weight:bold;
+    cursor:pointer;
+    margin-top:5px;
+}
+
+.register-submit:hover{
+    background:#553a29;
+}
+
+.modal-login{
+    text-align:center;
+    margin-top:18px;
+    font-size:14px;
+    color:#555;
+}
+
+.modal-login a{
+    color:#6F4E37;
+    font-weight:bold;
+    text-decoration:none;
+}
+
+.modal-message{
+    display:none;
+    padding:10px;
+    border-radius:5px;
+    margin-bottom:15px;
+    text-align:center;
+    font-size:14px;
+}
+
+.modal-message.error{
+    background:#ffe5e5;
+    color:#c62828;
+}
+
+.modal-message.success{
+    background:#e5f7e9;
+    color:#218838;
+}
+
+
+/* RESPONSIVE */
 
 @media(max-width:768px){
 
-.container{
-flex-direction:column;
-}
+    .container{
+        flex-direction:column;
+        max-height:95vh;
+        overflow:auto;
+    }
 
-.left{
-padding:30px;
-}
+    .left{
+        padding:30px;
+    }
 
-.right{
-padding:30px;
-}
+    .left i{
+        font-size:55px;
+        margin-bottom:10px;
+    }
+
+    .left h1{
+        font-size:30px;
+    }
+
+    .right{
+        padding:30px;
+    }
 
 }
 
 </style>
 </head>
 
+
 <body>
+
+
+<!-- =========================
+     LOGIN
+========================= -->
 
 <div class="container">
 
-<div class="left">
 
-<i class="fas fa-bag-shopping"></i>
+    <div class="left">
 
-<h1>Pisshop</h1>
+        <i class="fas fa-bag-shopping"></i>
 
-<p>
-Selamat datang kembali.<br>
-Silakan login untuk mulai berbelanja.
-</p>
+        <h1>Pisshop</h1>
+
+        <p>
+            Selamat datang kembali.<br>
+            Silakan login untuk mulai berbelanja.
+        </p>
+
+    </div>
+
+
+    <div class="right">
+
+        <h2>Login Customer</h2>
+
+
+        <!-- PESAN ERROR -->
+
+        <div
+            id="loginError"
+            class="message error">
+        </div>
+
+
+        <!-- PESAN BERHASIL -->
+
+        <div
+            id="loginSuccess"
+            class="message success">
+
+            <i class="fas fa-circle-check"></i>
+
+            Login berhasil! Mengalihkan...
+
+        </div>
+
+
+        <form id="loginForm">
+
+
+            <!-- EMAIL -->
+
+            <div class="input-group">
+
+                <label>
+                    Email / Username
+                </label>
+
+                <div class="input-box">
+
+                    <i class="fas fa-envelope"></i>
+
+                    <input
+                        type="text"
+                        id="email"
+                        placeholder="Masukkan Email / Username"
+                        required>
+
+                </div>
+
+            </div>
+
+
+            <!-- PASSWORD -->
+
+            <div class="input-group">
+
+                <label>
+                    Password
+                </label>
+
+                <div class="input-box">
+
+                    <i class="fas fa-lock"></i>
+
+                    <input
+                        type="password"
+                        id="password"
+                        placeholder="Masukkan Password"
+                        required>
+
+                    <i
+                        class="fas fa-eye password-toggle"
+                        id="toggleIcon"
+                        onclick="togglePassword()">
+                    </i>
+
+                </div>
+
+            </div>
+
+
+            <!-- INGAT SAYA -->
+
+            <div class="options">
+
+                <label>
+
+                    <input
+                        type="checkbox"
+                        id="remember">
+
+                    Ingat Saya
+
+                </label>
+
+            </div>
+
+
+            <!-- LOGIN -->
+
+            <button
+                type="submit"
+                class="btn login">
+
+                <i class="fas fa-right-to-bracket"></i>
+
+                Login
+
+            </button>
+
+
+            <!-- KEMBALI -->
+
+            <button
+                type="button"
+                class="btn back"
+                onclick="location.href='login.html'">
+
+                Kembali
+
+            </button>
+
+
+            <!-- DAFTAR -->
+
+            <div class="register">
+
+                Belum punya akun?
+
+                <a
+                    href="#"
+                    onclick="openRegisterModal(); return false;">
+
+                    Daftar Sekarang
+
+                </a>
+
+            </div>
+
+
+            <div class="footer">
+
+                © 2026 Pisshop
+
+            </div>
+
+
+        </form>
+
+    </div>
 
 </div>
 
-<div class="right">
 
-<h2>Login Customer</h2>
 
-<form action="index.html">
+<!-- =========================
+     MODAL DAFTAR
+========================= -->
 
-<div class="input-group">
+<div
+    class="modal-overlay"
+    id="registerModal">
 
-<label>Email</label>
 
-<div class="input-box">
+    <div class="register-modal">
 
-<i class="fas fa-envelope"></i>
 
-<input
-type="email"
-placeholder="Masukkan Email"
-required>
+        <!-- HEADER MODAL -->
+
+        <div class="modal-header">
+
+            <h3>
+
+                <i class="fas fa-user-plus"></i>
+
+                Daftar Akun Pelanggan
+
+            </h3>
+
+
+            <button
+                class="modal-close"
+                type="button"
+                onclick="closeRegisterModal()">
+
+                ×
+
+            </button>
+
+        </div>
+
+
+        <div class="modal-body">
+
+
+            <!-- ERROR DAFTAR -->
+
+            <div
+                id="registerError"
+                class="modal-message error">
+            </div>
+
+
+            <!-- BERHASIL DAFTAR -->
+
+            <div
+                id="registerSuccess"
+                class="modal-message success">
+            </div>
+
+
+            <form id="registerForm">
+
+
+                <!-- NAMA -->
+
+                <div class="modal-group">
+
+                    <label>
+                        Nama Lengkap
+                    </label>
+
+                    <input
+                        type="text"
+                        id="registerName"
+                        class="modal-input"
+                        placeholder="Nama Anda"
+                        required>
+
+                </div>
+
+
+                <!-- EMAIL -->
+
+                <div class="modal-group">
+
+                    <label>
+                        Email / Username
+                    </label>
+
+                    <input
+                        type="text"
+                        id="registerEmail"
+                        class="modal-input"
+                        placeholder="Email atau username"
+                        required>
+
+                </div>
+
+
+                <!-- PASSWORD -->
+
+                <div class="modal-group">
+
+                    <label>
+                        Password
+                    </label>
+
+
+                    <div class="modal-password">
+
+                        <input
+                            type="password"
+                            id="registerPassword"
+                            class="modal-input"
+                            placeholder="Buat password"
+                            required>
+
+
+                        <i
+                            class="fas fa-eye modal-eye"
+                            id="registerEye"
+                            onclick="toggleRegisterPassword()">
+                        </i>
+
+                    </div>
+
+                </div>
+
+
+                <!-- DAFTAR -->
+
+                <button
+                    type="submit"
+                    class="register-submit">
+
+                    <i class="fas fa-user-plus"></i>
+
+                    Daftar Sekarang
+
+                </button>
+
+
+            </form>
+
+
+            <!-- LOGIN -->
+
+            <div class="modal-login">
+
+                Sudah punya akun?
+
+                <a
+                    href="#"
+                    onclick="goToLogin(); return false;">
+
+                    Login di sini
+
+                </a>
+
+            </div>
+
+
+        </div>
+
+    </div>
 
 </div>
 
-</div>
 
-<div class="input-group">
-
-<label>Password</label>
-
-<div class="input-box">
-
-<i class="fas fa-lock"></i>
-
-<input
-type="password"
-id="password"
-placeholder="Masukkan Password"
-required>
-
-<i class="fas fa-eye password-toggle"
-onclick="togglePassword()"></i>
-
-</div>
-
-</div>
-
-<div class="options">
-
-<label>
-<input type="checkbox">
- Ingat Saya
-</label>
-
-<a href="#">Lupa Password?</a>
-
-</div>
-
-
-
-<button
-type="submit"
-class="btn login">
-<i class="fas fa-right-to-bracket"></i>
-Login
-</button>
-
-<button
-type="button"
-class="btn login"
-onclick="location.href='login.html'">
-Kembali
-</button>
-
-<div class="register">
-
-Belum punya akun?
-
-<a href="register.html">
-
-Daftar Sekarang
-
-</a>
-
-</div>
-
-<div class="footer">
-
-© 2026 Pisshop
-
-</div>
-
-</form>
-
-</div>
-
-</div>
 
 <script>
 
+
+/* =========================
+   LOGIN
+========================= */
+
+document
+.getElementById("loginForm")
+.addEventListener("submit", function(e){
+
+    e.preventDefault();
+
+
+    const email =
+        document
+        .getElementById("email")
+        .value
+        .trim();
+
+
+    const password =
+        document
+        .getElementById("password")
+        .value;
+
+
+    const error =
+        document
+        .getElementById("loginError");
+
+
+    const success =
+        document
+        .getElementById("loginSuccess");
+
+
+    error.style.display = "none";
+
+    success.style.display = "none";
+
+
+    /*
+       AMBIL DATA AKUN
+       YANG SUDAH DIDAFTARKAN
+    */
+
+    const registeredEmail =
+        localStorage.getItem("customerEmail");
+
+
+    const registeredPassword =
+        localStorage.getItem("customerPassword");
+
+
+    /*
+       JIKA BELUM DAFTAR
+    */
+
+    if(
+        !registeredEmail ||
+        !registeredPassword
+    ){
+
+        error.innerHTML =
+
+            '<i class="fas fa-circle-exclamation"></i> ' +
+
+            'Anda belum memiliki akun. ' +
+
+            'Silakan daftar terlebih dahulu.';
+
+
+        error.style.display = "block";
+
+        return;
+
+    }
+
+
+    /*
+       CEK EMAIL
+    */
+
+    if(
+        email !== registeredEmail
+    ){
+
+        error.innerHTML =
+
+            '<i class="fas fa-circle-exclamation"></i> ' +
+
+            'Email / Username tidak sesuai dengan akun yang terdaftar.';
+
+
+        error.style.display = "block";
+
+        return;
+
+    }
+
+
+    /*
+       CEK PASSWORD
+    */
+
+    if(
+        password !== registeredPassword
+    ){
+
+        error.innerHTML =
+
+            '<i class="fas fa-circle-exclamation"></i> ' +
+
+            'Password salah. Silakan masukkan password yang benar.';
+
+
+        error.style.display = "block";
+
+        return;
+
+    }
+
+
+    /*
+       LOGIN BERHASIL
+    */
+
+    localStorage.setItem(
+        "customerLoggedIn",
+        "true"
+    );
+
+
+    localStorage.setItem(
+        "loggedInEmail",
+        email
+    );
+
+
+    success.style.display = "block";
+
+
+    /*
+       PINDAH KE INDEX
+    */
+
+    setTimeout(function(){
+
+        window.location.href =
+            "index.html";
+
+    },1000);
+
+});
+
+
+
+/* =========================
+   TOGGLE PASSWORD LOGIN
+========================= */
+
 function togglePassword(){
 
-const pass=document.getElementById("password");
+    const pass =
+        document
+        .getElementById("password");
 
-if(pass.type==="password"){
 
-pass.type="text";
+    const icon =
+        document
+        .getElementById("toggleIcon");
 
-}else{
 
-pass.type="password";
+    if(
+        pass.type === "password"
+    ){
+
+        pass.type = "text";
+
+
+        icon.classList.remove(
+            "fa-eye"
+        );
+
+
+        icon.classList.add(
+            "fa-eye-slash"
+        );
+
+    }
+
+    else{
+
+        pass.type = "password";
+
+
+        icon.classList.remove(
+            "fa-eye-slash"
+        );
+
+
+        icon.classList.add(
+            "fa-eye"
+        );
+
+    }
 
 }
 
+
+
+/* =========================
+   BUKA MODAL
+========================= */
+
+function openRegisterModal(){
+
+    document
+    .getElementById("registerModal")
+    .classList.add("show");
+
+
+    document.body.style.overflow =
+        "hidden";
+
 }
+
+
+
+/* =========================
+   TUTUP MODAL
+========================= */
+
+function closeRegisterModal(){
+
+    document
+    .getElementById("registerModal")
+    .classList.remove("show");
+
+
+    document.body.style.overflow =
+        "";
+
+}
+
+
+
+/* =========================
+   PASSWORD DAFTAR
+========================= */
+
+function toggleRegisterPassword(){
+
+    const password =
+        document
+        .getElementById("registerPassword");
+
+
+    const eye =
+        document
+        .getElementById("registerEye");
+
+
+    if(
+        password.type === "password"
+    ){
+
+        password.type = "text";
+
+
+        eye.classList.remove(
+            "fa-eye"
+        );
+
+
+        eye.classList.add(
+            "fa-eye-slash"
+        );
+
+    }
+
+    else{
+
+        password.type = "password";
+
+
+        eye.classList.remove(
+            "fa-eye-slash"
+        );
+
+
+        eye.classList.add(
+            "fa-eye"
+        );
+
+    }
+
+}
+
+
+
+/* =========================
+   DAFTAR AKUN
+========================= */
+
+document
+.getElementById("registerForm")
+.addEventListener("submit", function(e){
+
+    e.preventDefault();
+
+
+    const name =
+        document
+        .getElementById("registerName")
+        .value
+        .trim();
+
+
+    const email =
+        document
+        .getElementById("registerEmail")
+        .value
+        .trim();
+
+
+    const password =
+        document
+        .getElementById("registerPassword")
+        .value;
+
+
+    const error =
+        document
+        .getElementById("registerError");
+
+
+    const success =
+        document
+        .getElementById("registerSuccess");
+
+
+    error.style.display = "none";
+
+    success.style.display = "none";
+
+
+    /*
+       CEK APAKAH SUDAH ADA AKUN
+    */
+
+    const oldEmail =
+        localStorage.getItem(
+            "customerEmail"
+        );
+
+
+    if(oldEmail){
+
+        error.innerHTML =
+
+            '<i class="fas fa-circle-exclamation"></i> ' +
+
+            'Akun sudah terdaftar. ' +
+
+            'Silakan login menggunakan akun tersebut.';
+
+
+        error.style.display = "block";
+
+        return;
+
+    }
+
+
+    /*
+       SIMPAN DATA AKUN
+    */
+
+    localStorage.setItem(
+        "customerName",
+        name
+    );
+
+
+    localStorage.setItem(
+        "customerEmail",
+        email
+    );
+
+
+    localStorage.setItem(
+        "customerPassword",
+        password
+    );
+
+
+    /*
+       TAMPILKAN BERHASIL
+    */
+
+    success.innerHTML =
+
+        '<i class="fas fa-circle-check"></i> ' +
+
+        'Pendaftaran berhasil! Silakan login.';
+
+
+    success.style.display = "block";
+
+
+    /*
+       KOSONGKAN FORM
+    */
+
+    document
+    .getElementById("registerForm")
+    .reset();
+
+
+    /*
+       TUTUP MODAL
+    */
+
+    setTimeout(function(){
+
+        closeRegisterModal();
+
+
+        document
+        .getElementById("email")
+        .focus();
+
+    },1500);
+
+});
+
+
+
+/* =========================
+   LOGIN DARI MODAL
+========================= */
+
+function goToLogin(){
+
+    closeRegisterModal();
+
+
+    document
+    .getElementById("email")
+    .focus();
+
+}
+
+
+
+/* =========================
+   KLIK LUAR MODAL
+========================= */
+
+document
+.getElementById("registerModal")
+.addEventListener(
+    "click",
+    function(e){
+
+        if(
+            e.target === this
+        ){
+
+            closeRegisterModal();
+
+        }
+
+    }
+);
+
+
+
+/* =========================
+   ESC UNTUK TUTUP
+========================= */
+
+document.addEventListener(
+    "keydown",
+    function(e){
+
+        if(
+            e.key === "Escape"
+        ){
+
+            closeRegisterModal();
+
+        }
+
+    }
+);
 
 </script>
 
 </body>
-</html>
-```
+ </html>
