@@ -753,160 +753,85 @@ body{
 
 <script>
 
-
 /* =========================
    LOGIN
 ========================= */
 
-document
-.getElementById("loginForm")
-.addEventListener("submit", function(e){
+document.getElementById("loginForm").addEventListener("submit", function(e){
 
     e.preventDefault();
 
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value;
 
-    const email =
-        document
-        .getElementById("email")
-        .value
-        .trim();
-
-
-    const password =
-        document
-        .getElementById("password")
-        .value;
-
-
-    const error =
-        document
-        .getElementById("loginError");
-
-
-    const success =
-        document
-        .getElementById("loginSuccess");
-
+    const error = document.getElementById("loginError");
+    const success = document.getElementById("loginSuccess");
 
     error.style.display = "none";
-
     success.style.display = "none";
 
+    /* AMBIL DATA AKUN */
+    const registeredEmail = localStorage.getItem("customerEmail");
+    const registeredPassword = localStorage.getItem("customerPassword");
 
-    /*
-       AMBIL DATA AKUN
-       YANG SUDAH DIDAFTARKAN
-    */
-
-    const registeredEmail =
-        localStorage.getItem("customerEmail");
-
-
-    const registeredPassword =
-        localStorage.getItem("customerPassword");
-
-
-    /*
-       JIKA BELUM DAFTAR
-    */
-
-    if(
-        !registeredEmail ||
-        !registeredPassword
-    ){
+    /* CEK AKUN */
+    if (!registeredEmail || !registeredPassword) {
 
         error.innerHTML =
-
             '<i class="fas fa-circle-exclamation"></i> ' +
-
-            'Anda belum memiliki akun. ' +
-
-            'Silakan daftar terlebih dahulu.';
-
+            'Akun belum terdaftar. Silakan klik "Daftar Sekarang" terlebih dahulu.';
 
         error.style.display = "block";
-
         return;
-
     }
 
-
-    /*
-       CEK EMAIL
-    */
-
-    if(
-        email !== registeredEmail
-    ){
+    /* CEK EMAIL / USERNAME */
+    if (email.toLowerCase() !== registeredEmail.toLowerCase()) {
 
         error.innerHTML =
-
             '<i class="fas fa-circle-exclamation"></i> ' +
-
-            'Email / Username tidak sesuai dengan akun yang terdaftar.';
-
+            'Email / Username tidak sesuai.';
 
         error.style.display = "block";
-
         return;
-
     }
 
-
-    /*
-       CEK PASSWORD
-    */
-
-    if(
-        password !== registeredPassword
-    ){
+    /* CEK PASSWORD */
+    if (password !== registeredPassword) {
 
         error.innerHTML =
-
             '<i class="fas fa-circle-exclamation"></i> ' +
-
-            'Password salah. Silakan masukkan password yang benar.';
-
+            'Password salah.';
 
         error.style.display = "block";
-
         return;
-
     }
 
+    /* LOGIN BERHASIL */
 
-    /*
-       LOGIN BERHASIL
-    */
+    localStorage.setItem("customerLoggedIn", "true");
+    localStorage.setItem("loggedInEmail", registeredEmail);
 
-    localStorage.setItem(
-        "customerLoggedIn",
-        "true"
-    );
+    const customerName =
+        localStorage.getItem("customerName") || "Customer";
 
+    localStorage.setItem("loggedInName", customerName);
 
-    localStorage.setItem(
-        "loggedInEmail",
-        email
-    );
-
+    success.innerHTML =
+        '<i class="fas fa-circle-check"></i> ' +
+        'Login berhasil! Mengalihkan...';
 
     success.style.display = "block";
 
-
-    /*
-       PINDAH KE INDEX
-    */
+    /* PINDAH KE HALAMAN UTAMA */
 
     setTimeout(function(){
 
-        window.location.href =
-            "index.html";
+        window.location.href = "index.html";
 
-    },1000);
+    }, 1000);
 
 });
-
 
 
 /* =========================
@@ -915,70 +840,39 @@ document
 
 function togglePassword(){
 
-    const pass =
-        document
-        .getElementById("password");
+    const pass = document.getElementById("password");
+    const icon = document.getElementById("toggleIcon");
 
-
-    const icon =
-        document
-        .getElementById("toggleIcon");
-
-
-    if(
-        pass.type === "password"
-    ){
+    if(pass.type === "password"){
 
         pass.type = "text";
 
+        icon.classList.remove("fa-eye");
+        icon.classList.add("fa-eye-slash");
 
-        icon.classList.remove(
-            "fa-eye"
-        );
-
-
-        icon.classList.add(
-            "fa-eye-slash"
-        );
-
-    }
-
-    else{
+    }else{
 
         pass.type = "password";
 
-
-        icon.classList.remove(
-            "fa-eye-slash"
-        );
-
-
-        icon.classList.add(
-            "fa-eye"
-        );
+        icon.classList.remove("fa-eye-slash");
+        icon.classList.add("fa-eye");
 
     }
 
 }
 
 
-
 /* =========================
-   BUKA MODAL
+   BUKA MODAL DAFTAR
 ========================= */
 
 function openRegisterModal(){
 
-    document
-    .getElementById("registerModal")
-    .classList.add("show");
+    document.getElementById("registerModal").classList.add("show");
 
-
-    document.body.style.overflow =
-        "hidden";
+    document.body.style.overflow = "hidden";
 
 }
-
 
 
 /* =========================
@@ -987,208 +881,138 @@ function openRegisterModal(){
 
 function closeRegisterModal(){
 
-    document
-    .getElementById("registerModal")
-    .classList.remove("show");
+    document.getElementById("registerModal").classList.remove("show");
 
-
-    document.body.style.overflow =
-        "";
+    document.body.style.overflow = "";
 
 }
 
 
-
 /* =========================
-   PASSWORD DAFTAR
+   TOGGLE PASSWORD DAFTAR
 ========================= */
 
 function toggleRegisterPassword(){
 
     const password =
-        document
-        .getElementById("registerPassword");
-
+        document.getElementById("registerPassword");
 
     const eye =
-        document
-        .getElementById("registerEye");
+        document.getElementById("registerEye");
 
-
-    if(
-        password.type === "password"
-    ){
+    if(password.type === "password"){
 
         password.type = "text";
 
+        eye.classList.remove("fa-eye");
+        eye.classList.add("fa-eye-slash");
 
-        eye.classList.remove(
-            "fa-eye"
-        );
-
-
-        eye.classList.add(
-            "fa-eye-slash"
-        );
-
-    }
-
-    else{
+    }else{
 
         password.type = "password";
 
-
-        eye.classList.remove(
-            "fa-eye-slash"
-        );
-
-
-        eye.classList.add(
-            "fa-eye"
-        );
+        eye.classList.remove("fa-eye-slash");
+        eye.classList.add("fa-eye");
 
     }
 
 }
-
 
 
 /* =========================
    DAFTAR AKUN
 ========================= */
 
-document
-.getElementById("registerForm")
-.addEventListener("submit", function(e){
+document.getElementById("registerForm").addEventListener("submit", function(e){
 
     e.preventDefault();
 
-
     const name =
-        document
-        .getElementById("registerName")
-        .value
-        .trim();
-
+        document.getElementById("registerName").value.trim();
 
     const email =
-        document
-        .getElementById("registerEmail")
-        .value
-        .trim();
-
+        document.getElementById("registerEmail").value.trim();
 
     const password =
-        document
-        .getElementById("registerPassword")
-        .value;
-
+        document.getElementById("registerPassword").value;
 
     const error =
-        document
-        .getElementById("registerError");
-
+        document.getElementById("registerError");
 
     const success =
-        document
-        .getElementById("registerSuccess");
-
+        document.getElementById("registerSuccess");
 
     error.style.display = "none";
-
     success.style.display = "none";
 
 
-    /*
-       CEK APAKAH SUDAH ADA AKUN
-    */
+    /* VALIDASI */
 
-    const oldEmail =
-        localStorage.getItem(
-            "customerEmail"
-        );
-
-
-    if(oldEmail){
+    if(name.length < 3){
 
         error.innerHTML =
-
             '<i class="fas fa-circle-exclamation"></i> ' +
-
-            'Akun sudah terdaftar. ' +
-
-            'Silakan login menggunakan akun tersebut.';
-
+            'Nama minimal 3 karakter.';
 
         error.style.display = "block";
-
         return;
+    }
 
+    if(email.length < 3){
+
+        error.innerHTML =
+            '<i class="fas fa-circle-exclamation"></i> ' +
+            'Email / Username tidak boleh kosong.';
+
+        error.style.display = "block";
+        return;
+    }
+
+    if(password.length < 4){
+
+        error.innerHTML =
+            '<i class="fas fa-circle-exclamation"></i> ' +
+            'Password minimal 4 karakter.';
+
+        error.style.display = "block";
+        return;
     }
 
 
-    /*
-       SIMPAN DATA AKUN
-    */
+    /* SIMPAN AKUN */
 
-    localStorage.setItem(
-        "customerName",
-        name
-    );
+    localStorage.setItem("customerName", name);
+    localStorage.setItem("customerEmail", email);
+    localStorage.setItem("customerPassword", password);
 
 
-    localStorage.setItem(
-        "customerEmail",
-        email
-    );
-
-
-    localStorage.setItem(
-        "customerPassword",
-        password
-    );
-
-
-    /*
-       TAMPILKAN BERHASIL
-    */
+    /* PESAN BERHASIL */
 
     success.innerHTML =
-
         '<i class="fas fa-circle-check"></i> ' +
-
         'Pendaftaran berhasil! Silakan login.';
-
 
     success.style.display = "block";
 
 
-    /*
-       KOSONGKAN FORM
-    */
+    /* RESET FORM */
 
-    document
-    .getElementById("registerForm")
-    .reset();
+    document.getElementById("registerForm").reset();
 
 
-    /*
-       TUTUP MODAL
-    */
+    /* TUTUP MODAL */
 
     setTimeout(function(){
 
         closeRegisterModal();
 
+        document.getElementById("email").value = email;
 
-        document
-        .getElementById("email")
-        .focus();
+        document.getElementById("password").focus();
 
-    },1500);
+    }, 1200);
 
 });
-
 
 
 /* =========================
@@ -1199,58 +1023,41 @@ function goToLogin(){
 
     closeRegisterModal();
 
-
-    document
-    .getElementById("email")
-    .focus();
+    document.getElementById("email").focus();
 
 }
 
 
-
 /* =========================
-   KLIK LUAR MODAL
+   KLIK DI LUAR MODAL
 ========================= */
 
-document
-.getElementById("registerModal")
-.addEventListener(
-    "click",
-    function(e){
+document.getElementById("registerModal").addEventListener("click", function(e){
 
-        if(
-            e.target === this
-        ){
+    if(e.target === this){
 
-            closeRegisterModal();
-
-        }
+        closeRegisterModal();
 
     }
-);
 
+});
 
 
 /* =========================
-   ESC UNTUK TUTUP
+   ESC
 ========================= */
 
-document.addEventListener(
-    "keydown",
-    function(e){
+document.addEventListener("keydown", function(e){
 
-        if(
-            e.key === "Escape"
-        ){
+    if(e.key === "Escape"){
 
-            closeRegisterModal();
-
-        }
+        closeRegisterModal();
 
     }
-);
+
+});
 
 </script>
 
 </body>
- </html>
+    </html>
